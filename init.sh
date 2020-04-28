@@ -1,3 +1,3 @@
 #!/bin/bash
-docker cp ./volumes/kong kong-konga-keycloak_kong-db_1:/var/lib/postgresql/data
-docker cp ./volumes/keycloak kong-konga-keycloak_keycloak-db_1:/var/lib/postgresql/data
+cat dump_kong.sql | docker exec -i kong-konga-keycloak_kong-db_1 psql -U kong -d postgres
+cat dump_keycloak.sql | docker exec -i kong-konga-keycloak_keycloak-db_1 psql -U keycloak -d postgres
