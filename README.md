@@ -78,6 +78,10 @@ Run the bash script init.sh, which will copy the configs for Kong and Keycloak t
 ./init.sh
 ```
 
+#### Change local IP address in kong-oidc config if you change network, or first init
+
+Run the python script patch-kong-oidc.py. (Make sure the containers are up!)
+
 ## NOT-DOCKERIZED
 In the folder not-dockerized you will find fastapi services which are not yet dockerized, such as the users service.
 
