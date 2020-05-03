@@ -1251,9 +1251,9 @@ COPY public.konga_api_health_checks (id, api_id, api, health_check_endpoint, not
 --
 
 COPY public.konga_email_transports (id, name, description, schema, settings, active, "createdAt", "updatedAt", "createdUserId", "updatedUserId") FROM stdin;
-1	smtp	Send emails using the SMTP protocol	[{"name":"host","description":"The SMTP host","type":"text","required":true},{"name":"port","description":"The SMTP port","type":"text","required":true},{"name":"username","model":"auth.user","description":"The SMTP user username","type":"text","required":true},{"name":"password","model":"auth.pass","description":"The SMTP user password","type":"text","required":true},{"name":"secure","model":"secure","description":"Use secure connection","type":"boolean"}]	{"host":"","port":"","auth":{"user":"","pass":""},"secure":false}	t	2020-03-24 12:46:54+00	2020-04-28 10:42:28+00	\N	\N
-2	sendmail	Pipe messages to the sendmail command	\N	{"sendmail":true}	f	2020-03-24 12:46:54+00	2020-04-28 10:42:28+00	\N	\N
-3	mailgun	Send emails through Mailgun’s Web API	[{"name":"api_key","model":"auth.api_key","description":"The API key that you got from www.mailgun.com/cp","type":"text","required":true},{"name":"domain","model":"auth.domain","description":"One of your domain names listed at your https://mailgun.com/app/domains","type":"text","required":true}]	{"auth":{"api_key":"","domain":""}}	f	2020-03-24 12:46:54+00	2020-04-28 10:42:28+00	\N	\N
+1	smtp	Send emails using the SMTP protocol	[{"name":"host","description":"The SMTP host","type":"text","required":true},{"name":"port","description":"The SMTP port","type":"text","required":true},{"name":"username","model":"auth.user","description":"The SMTP user username","type":"text","required":true},{"name":"password","model":"auth.pass","description":"The SMTP user password","type":"text","required":true},{"name":"secure","model":"secure","description":"Use secure connection","type":"boolean"}]	{"host":"","port":"","auth":{"user":"","pass":""},"secure":false}	t	2020-03-24 12:46:54+00	2020-05-03 13:45:13+00	\N	\N
+2	sendmail	Pipe messages to the sendmail command	\N	{"sendmail":true}	f	2020-03-24 12:46:54+00	2020-05-03 13:45:13+00	\N	\N
+3	mailgun	Send emails through Mailgun’s Web API	[{"name":"api_key","model":"auth.api_key","description":"The API key that you got from www.mailgun.com/cp","type":"text","required":true},{"name":"domain","model":"auth.domain","description":"One of your domain names listed at your https://mailgun.com/app/domains","type":"text","required":true}]	{"auth":{"api_key":"","domain":""}}	f	2020-03-24 12:46:54+00	2020-05-03 13:45:13+00	\N	\N
 \.
 
 
@@ -1323,7 +1323,7 @@ COPY public.konga_passports (id, protocol, password, provider, identifier, token
 --
 
 COPY public.konga_settings (id, data, "createdAt", "updatedAt", "createdUserId", "updatedUserId") FROM stdin;
-1	{"signup_enable":false,"signup_require_activation":false,"info_polling_interval":5000,"email_default_sender_name":"KONGA","email_default_sender":"konga@konga.test","email_notifications":false,"default_transport":"sendmail","notify_when":{"node_down":{"title":"A node is down or unresponsive","description":"Health checks must be enabled for the nodes that need to be monitored.","active":false},"api_down":{"title":"An API is down or unresponsive","description":"Health checks must be enabled for the APIs that need to be monitored.","active":false}},"integrations":[{"id":"slack","name":"Slack","image":"slack_rgb.png","config":{"enabled":false,"fields":[{"id":"slack_webhook_url","name":"Slack Webhook URL","type":"text","required":true,"value":""}],"slack_webhook_url":""}}],"user_permissions":{"apis":{"create":false,"read":true,"update":false,"delete":false},"services":{"create":false,"read":true,"update":false,"delete":false},"routes":{"create":false,"read":true,"update":false,"delete":false},"consumers":{"create":false,"read":true,"update":false,"delete":false},"plugins":{"create":false,"read":true,"update":false,"delete":false},"upstreams":{"create":false,"read":true,"update":false,"delete":false},"certificates":{"create":false,"read":true,"update":false,"delete":false},"connections":{"create":false,"read":true,"update":false,"delete":false},"users":{"create":false,"read":true,"update":false,"delete":false}}}	2020-03-24 12:46:54+00	2020-04-28 10:42:28+00	\N	\N
+1	{"signup_enable":false,"signup_require_activation":false,"info_polling_interval":5000,"email_default_sender_name":"KONGA","email_default_sender":"konga@konga.test","email_notifications":false,"default_transport":"sendmail","notify_when":{"node_down":{"title":"A node is down or unresponsive","description":"Health checks must be enabled for the nodes that need to be monitored.","active":false},"api_down":{"title":"An API is down or unresponsive","description":"Health checks must be enabled for the APIs that need to be monitored.","active":false}},"integrations":[{"id":"slack","name":"Slack","image":"slack_rgb.png","config":{"enabled":false,"fields":[{"id":"slack_webhook_url","name":"Slack Webhook URL","type":"text","required":true,"value":""}],"slack_webhook_url":""}}],"user_permissions":{"apis":{"create":false,"read":true,"update":false,"delete":false},"services":{"create":false,"read":true,"update":false,"delete":false},"routes":{"create":false,"read":true,"update":false,"delete":false},"consumers":{"create":false,"read":true,"update":false,"delete":false},"plugins":{"create":false,"read":true,"update":false,"delete":false},"upstreams":{"create":false,"read":true,"update":false,"delete":false},"certificates":{"create":false,"read":true,"update":false,"delete":false},"connections":{"create":false,"read":true,"update":false,"delete":false},"users":{"create":false,"read":true,"update":false,"delete":false}}}	2020-03-24 12:46:54+00	2020-05-03 13:45:13+00	\N	\N
 \.
 
 
@@ -1375,7 +1375,8 @@ COPY public.oauth2_tokens (id, created_at, credential_id, service_id, access_tok
 COPY public.plugins (id, created_at, name, consumer_id, service_id, route_id, config, enabled, cache_key, protocols, tags) FROM stdin;
 7aa21e8f-57a7-4c3c-babc-55e8485e81a1	2020-03-31 14:39:25+00	proxy-cache	\N	73a4a292-6706-47be-a74c-5414dc3d6538	\N	{"memory": {"dictionary_name": "kong_db_cache"}, "strategy": "memory", "cache_ttl": 300, "storage_ttl": null, "content_type": ["text/plain", "application/json"], "vary_headers": null, "cache_control": false, "response_code": [200, 301, 404], "request_method": ["GET", "HEAD"], "vary_query_params": null}	t	plugins:proxy-cache::73a4a292-6706-47be-a74c-5414dc3d6538::	{grpc,grpcs,http,https}	\N
 5d0c63e0-0087-4025-8202-b6030ec8c05b	2020-04-14 00:40:00+00	oidc	\N	\N	\N	{"realm": "test", "scope": "openid", "filters": null, "timeout": null, "client_id": "kong", "discovery": "http://192.168.0.33:8180/auth/realms/test/.well-known/openid-configuration", "ssl_verify": "no", "bearer_only": "no", "logout_path": "/logout", "client_secret": "4cd2e98f-df15-4972-84c8-1be974e9aba6", "response_type": "code", "unauth_action": "auth", "session_secret": null, "redirect_uri_path": null, "recovery_page_path": null, "ignore_auth_filters": "", "id_token_header_name": "X-ID-Token", "userinfo_header_name": "X-USERINFO", "access_token_as_bearer": "yes", "introspection_endpoint": "http://192.168.0.33:8180/auth/realms/test/protocol/openid-connect/token/introspect", "disable_id_token_header": "no", "disable_userinfo_header": "no", "revoke_tokens_on_logout": "yes", "access_token_header_name": "Authorization", "redirect_after_logout_uri": "/", "token_endpoint_auth_method": "client_secret_post", "disable_access_token_header": "no", "introspection_endpoint_auth_method": null}	f	plugins:oidc::::	{grpc,grpcs,http,https}	\N
-de00c863-34d3-48d0-9541-8f77cd0f3a90	2020-04-26 14:05:46+00	oidc	\N	73a4a292-6706-47be-a74c-5414dc3d6538	\N	{"realm": "test", "scope": "openid", "filters": null, "timeout": null, "client_id": "kong", "discovery": "http://192.168.0.157:8180/auth/realms/test/.well-known/openid-configuration", "ssl_verify": "no", "bearer_only": "yes", "logout_path": "/logout", "client_secret": "4cd2e98f-df15-4972-84c8-1be974e9aba6", "response_type": "code", "unauth_action": "auth", "session_secret": null, "redirect_uri_path": null, "recovery_page_path": null, "ignore_auth_filters": "", "id_token_header_name": "X-ID-Token", "userinfo_header_name": "X-USERINFO", "access_token_as_bearer": "no", "introspection_endpoint": "http://192.168.0.157:8180/auth/realms/test/protocol/openid-connect/token/introspect", "disable_id_token_header": "no", "disable_userinfo_header": "no", "revoke_tokens_on_logout": "no", "access_token_header_name": "X-Access-Token", "redirect_after_logout_uri": "/", "token_endpoint_auth_method": "client_secret_post", "disable_access_token_header": "no", "introspection_endpoint_auth_method": null}	t	plugins:oidc::73a4a292-6706-47be-a74c-5414dc3d6538::	{grpc,grpcs,http,https}	\N
+1375ed0f-a210-493c-9af8-06fcf2184353	2020-05-03 13:58:07+00	cookies-to-headers	\N	\N	\N	{"cookie_name": "Authorization"}	t	plugins:cookies-to-headers::::	{grpc,grpcs,http,https}	\N
+de00c863-34d3-48d0-9541-8f77cd0f3a90	2020-04-26 14:05:46+00	oidc	\N	73a4a292-6706-47be-a74c-5414dc3d6538	\N	{"realm": "test", "scope": "openid", "filters": null, "timeout": null, "client_id": "kong", "discovery": "http://192.168.0.157:8180/auth/realms/test/.well-known/openid-configuration", "ssl_verify": "no", "bearer_only": "no", "logout_path": "/logout", "client_secret": "4cd2e98f-df15-4972-84c8-1be974e9aba6", "response_type": "code", "unauth_action": "auth", "session_secret": null, "redirect_uri_path": "/users/auth", "recovery_page_path": null, "ignore_auth_filters": "", "id_token_header_name": "X-ID-Token", "userinfo_header_name": "X-USERINFO", "access_token_as_bearer": "no", "introspection_endpoint": "http://192.168.0.157:8180/auth/realms/test/protocol/openid-connect/token/introspect", "disable_id_token_header": "no", "disable_userinfo_header": "no", "revoke_tokens_on_logout": "no", "access_token_header_name": "X-Access-Token", "redirect_after_logout_uri": "/", "token_endpoint_auth_method": "client_secret_post", "disable_access_token_header": "no", "introspection_endpoint_auth_method": null}	t	plugins:oidc::73a4a292-6706-47be-a74c-5414dc3d6538::	{grpc,grpcs,http,https}	\N
 \.
 
 
@@ -1403,7 +1404,7 @@ COPY public.routes (id, created_at, updated_at, name, service_id, protocols, met
 729b06ac-e724-4a92-a8ee-bd8b26c5a9d7	2020-03-24 13:04:32+00	2020-03-24 13:04:32+00	\N	6caa5d11-99bb-4db7-aa48-e7938857e3df	{http,https}	\N	\N	{/test}	\N	\N	\N	0	t	f	\N	426	\N	v0
 c6e643ad-e468-4ecc-8850-e642f95edd32	2020-03-31 14:06:11+00	2020-03-31 14:06:11+00	\N	73a4a292-6706-47be-a74c-5414dc3d6538	{http,https}	{GET}	\N	{/fastapi}	\N	\N	\N	0	t	f	\N	426	\N	v0
 098bf4de-3779-4c87-9588-8a6f9f702d2b	2020-03-31 14:07:18+00	2020-03-31 14:07:18+00	\N	73a4a292-6706-47be-a74c-5414dc3d6538	{http,https}	{POST,PUT,PATCH,DELETE}	\N	{/fastapi}	\N	\N	\N	0	t	f	\N	426	\N	v0
-5467e2dc-c969-45a5-87df-4ea2533b80fa	2020-04-26 13:36:56+00	2020-04-26 13:45:10+00	\N	323e458d-2bff-45ff-8eb0-8170801c07ed	{http,https}	{GET,POST}	{}	{/}	\N	\N	\N	0	t	f	\N	426	\N	v0
+5467e2dc-c969-45a5-87df-4ea2533b80fa	2020-04-26 13:36:56+00	2020-05-03 20:20:15+00	\N	323e458d-2bff-45ff-8eb0-8170801c07ed	{http,https}	{GET,POST}	{}	{/}	\N	\N	\N	0	t	f	\N	426	\N	v0
 \.
 
 
@@ -1459,14 +1460,15 @@ COPY public.snis (id, created_at, name, certificate_id, tags) FROM stdin;
 COPY public.tags (entity_id, entity_name, tags) FROM stdin;
 729b06ac-e724-4a92-a8ee-bd8b26c5a9d7	routes	\N
 6caa5d11-99bb-4db7-aa48-e7938857e3df	services	{}
+1375ed0f-a210-493c-9af8-06fcf2184353	plugins	\N
 73a4a292-6706-47be-a74c-5414dc3d6538	services	\N
 c6e643ad-e468-4ecc-8850-e642f95edd32	routes	\N
 098bf4de-3779-4c87-9588-8a6f9f702d2b	routes	\N
 7aa21e8f-57a7-4c3c-babc-55e8485e81a1	plugins	\N
 5467e2dc-c969-45a5-87df-4ea2533b80fa	routes	\N
+de00c863-34d3-48d0-9541-8f77cd0f3a90	plugins	\N
 5d0c63e0-0087-4025-8202-b6030ec8c05b	plugins	\N
 323e458d-2bff-45ff-8eb0-8170801c07ed	services	{}
-de00c863-34d3-48d0-9541-8f77cd0f3a90	plugins	\N
 \.
 
 
@@ -1519,7 +1521,7 @@ SELECT pg_catalog.setval('public.konga_kong_nodes_id_seq', 1, true);
 -- Name: konga_kong_services_id_seq; Type: SEQUENCE SET; Schema: public; Owner: kong
 --
 
-SELECT pg_catalog.setval('public.konga_kong_services_id_seq', 2, true);
+SELECT pg_catalog.setval('public.konga_kong_services_id_seq', 3, true);
 
 
 --

@@ -60,46 +60,43 @@ def get_token(user: str, password: str):
     return {"token": token}
 
 # Get Userinfo
-@app.get("/users")
-def get_user_info(request: Request,):
+@app.get("/users/userinfo")
+def get_user_info(Authorization: str = Header(None)):
     #userinfo = keycloak_openid.userinfo(token['access_token'])
-    authorization: str = request.cookies.get("Authorization")
-    logger.debug(authorization)
-    userinfo = keycloak_openid.userinfo(authorization[7:])
+    logger.debug(Authorization)
+    userinfo = keycloak_openid.userinfo(Authorization[7:])
     return {"userinfo": userinfo}
 
 # Refresh token
 @app.get("/users/refresh")
-def refresh_token(x_refresh_token: str = Header(None)):
-    token = keycloak_openid.refresh_token(x_refresh_token)
+def refresh_token(request: Request,):
+    refresh_token: str = request.cookies.get("Refresh")
+    token = keycloak_openid.refresh_token(refresh_token)
     return {"token": token}
 
 # Logout
 @app.get("/users/logout")
-def logout(x_refresh_token: str = Header(None)):
-    keycloak_openid.logout(x_refresh_token)
-
-# Decode Token
-@app.get("/users/decode")
-def get_decoded_token(x_access_token: str = Header(None)):
-    KEYCLOAK_PUBLIC_KEY = keycloak_openid.public_key()
-    options = {"verify_signature": True, "verify_aud": True, "exp": True}
-    token_info = keycloak_openid.decode_token(x_access_token, key=KEYCLOAK_PUBLIC_KEY, options=options)
-    return {"token_info": token_info}
+def logout(request: Request,):
+    refresh_token: str = request.cookies.get("Refresh")
+    keycloak_openid.logout(refresh_token)
+    response = RedirectResponse(url="http://localhost:8000/")
+    response.delete_cookie("Authorization", domain="localhost")
+    response.delete_cookie("Refresh", domain="localhost")
+    return response
 
 # Introspect Token
 @app.get("/users/introspect")
-def introspect_token(x_access_token: str = Header(None)):
-    token_info = keycloak_openid.introspect(x_access_token)
+def introspect_token(Authorization: str = Header(None)):
+    token_info = keycloak_openid.introspect(Authorization)
     return {"token_info": token_info}
 
 
-@app.get("/login")
+@app.get("/users/login")
 async def login() -> RedirectResponse:
     return RedirectResponse(AUTH_URL)
 
 
-@app.get("/auth")
+@app.get("/users/auth")
 async def auth(code: str) -> RedirectResponse:
     payload = (
         f"grant_type=authorization_code&code={code}"
@@ -115,21 +112,21 @@ async def auth(code: str) -> RedirectResponse:
     refresh_token = token_body["refresh_token"]
 
     response = RedirectResponse(url="/")
-    response.set_cookie("Authorization", value=f"Bearer {access_token}")
+    response.set_cookie("Authorization", value=f"{access_token}")
     response.set_cookie("Refresh", value=f"{refresh_token}")
     return response
 
 
 @app.get("/")
-async def root(request: Request,) -> Dict:
-    authorization: str = request.cookies.get("Authorization")
-    scheme, credentials = get_authorization_scheme_param(authorization)
-    
-    public_key = "b'-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs2iY+UNfz035EspzTZUeSai+FbBQC487BLsWC/BA+d5b1UFVs0k1erXnqrFBWjKzgn10r3fMfPlPn8ffK8iEuvBEoJ5vnRaHRqjhIi1DZ+h1o5sC9qhty0p5k+Nu9i0rV/CpY6PkAQw/e7kXBMWhK8zM/TAsA0GQUOaZDm/4WeNUq2roMAX+fAJZfMFiI2/WRvBQKcTY1SB6wJhC9c5QhBgWs83XR9EGP6BxyzvJMroR0kMyb+B7ITWbzpKXuUWbhsxRWm0Mz2nwHo9jsREC03wN0CnD+vocCnKjLv/4Bqy9igwKBT2bpAssR0Y7p3v1QZmSO3D4OxUhhkoWBZBCyQIDAQAB'"
+async def root(Authorization: str = Header(None)) -> Dict:
+    scheme, credentials = get_authorization_scheme_param(Authorization)
+    if credentials:
+        public_key = "b'-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs2iY+UNfz035EspzTZUeSai+FbBQC487BLsWC/BA+d5b1UFVs0k1erXnqrFBWjKzgn10r3fMfPlPn8ffK8iEuvBEoJ5vnRaHRqjhIi1DZ+h1o5sC9qhty0p5k+Nu9i0rV/CpY6PkAQw/e7kXBMWhK8zM/TAsA0GQUOaZDm/4WeNUq2roMAX+fAJZfMFiI2/WRvBQKcTY1SB6wJhC9c5QhBgWs83XR9EGP6BxyzvJMroR0kMyb+B7ITWbzpKXuUWbhsxRWm0Mz2nwHo9jsREC03wN0CnD+vocCnKjLv/4Bqy9igwKBT2bpAssR0Y7p3v1QZmSO3D4OxUhhkoWBZBCyQIDAQAB'"
 
-    decoded = jwt.decode(
-        credentials, key=public_key, verify=False
-    )  # TODO input keycloak public key as key, disable option to verify aud
-    logger.debug(decoded)
-
-    return {"message": "You're logged in!"}
+        decoded = jwt.decode(
+            credentials, key=public_key, verify=False
+        )
+        logger.debug(decoded)
+        return {"message": "You're logged in!"}
+    else:
+        return {"message": "You're not logged in!"}

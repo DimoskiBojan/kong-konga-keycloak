@@ -21,5 +21,8 @@ RUN cd /tmp && \
     rm -rf /tmp/luarocks
 
 RUN luarocks install kong-enhanced-oidc
+RUN luarocks install kong-plugin-cookies-to-headers
+
+COPY nginx-redis.kong.conf /usr/local/kong
 
 USER kong

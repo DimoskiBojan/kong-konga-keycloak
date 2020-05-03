@@ -1813,7 +1813,7 @@ d92ffcff-af21-4144-b731-a89bd59cdf5e	t	f	account	0	f	b84a75fd-0e60-49ea-866b-7c3
 810c10be-2cca-472b-9785-23a7e2668a9c	t	f	security-admin-console	0	t	e164482e-639b-43a8-b5b4-f7e6e1b65459	/admin/test/console/	f	\N	f	test	openid-connect	0	f	f	${client_security-admin-console}	f	client-secret	${authAdminUrl}	\N	\N	t	f	f
 8b1f4af8-a35d-49de-a2ee-c6b74983632e	t	f	admin-cli	0	t	da5730fa-5175-4d8b-a424-2e037d2d02e9	\N	f	\N	f	test	openid-connect	0	f	f	${client_admin-cli}	f	client-secret	\N	\N	\N	f	f	t
 e62df68a-4189-4aaa-b5cd-09909251c2a3	t	t	myapp	0	t	c40ef13e-0740-4844-b801-2c4c03ae3f25	\N	f	\N	f	test	openid-connect	-1	f	f	\N	f	client-secret	http://localhost:8000	\N	\N	t	f	t
-f62fc94f-75b0-4bba-82e0-425f3bb0ea89	t	t	kong	0	f	4cd2e98f-df15-4972-84c8-1be974e9aba6	\N	f	http://localhost:8000/login	f	test	openid-connect	-1	f	f	\N	t	client-secret	http://localhost:8000	\N	\N	t	f	t
+f62fc94f-75b0-4bba-82e0-425f3bb0ea89	t	t	kong	0	f	4cd2e98f-df15-4972-84c8-1be974e9aba6	\N	f	http://localhost:8000/users/login	f	test	openid-connect	-1	f	f	\N	t	client-secret	http://localhost:8000	\N	\N	t	f	t
 \.
 
 
@@ -3225,7 +3225,7 @@ ea3b6386-3a19-4970-8b4e-be48fe310294	/realms/master/account/*
 d92ffcff-af21-4144-b731-a89bd59cdf5e	/realms/test/account/*
 810c10be-2cca-472b-9785-23a7e2668a9c	/admin/test/console/*
 e62df68a-4189-4aaa-b5cd-09909251c2a3	/
-f62fc94f-75b0-4bba-82e0-425f3bb0ea89	http://localhost:8000/auth
+f62fc94f-75b0-4bba-82e0-425f3bb0ea89	http://localhost:8000/users/auth
 \.
 
 
@@ -3388,7 +3388,7 @@ COPY public.user_entity (id, email, email_constraint, email_verified, enabled, f
 86d125d1-da32-41af-b792-1c1fa4693efc	\N	15d9f3e0-c0e1-4efa-a860-85ef52730f9b	f	t	\N	\N	\N	master	admin	1585055547117	\N	0
 58b0d88b-7e7b-4da5-9ea8-f81425f54bf6	\N	ff439682-ea96-4e72-95ea-bec07d2cf79c	f	t	\N	\N	\N	test	service-account-kong	1586881778836	f62fc94f-75b0-4bba-82e0-425f3bb0ea89	0
 6418686e-f9e2-424d-b7c1-481bca508500	\N	1bd1f94b-bc7d-4d54-b0ab-75aa40839f1d	t	t	\N	\N	\N	test	admin	1586885972762	\N	0
-78c5cfa9-3e79-4079-9fe7-5ef3eeb0ce5b	demouser@gmail.com	demouser@gmail.com	t	t	\N	\N	\N	test	demouser	1585057596544	\N	1587921226
+78c5cfa9-3e79-4079-9fe7-5ef3eeb0ce5b	demouser@gmail.com	demouser@gmail.com	t	t	\N	\N	\N	test	demouser	1585057596544	\N	1588546160
 \.
 
 
@@ -3511,7 +3511,7 @@ COPY public.username_login_failure (realm_id, username, failed_login_not_before,
 COPY public.web_origins (client_id, value) FROM stdin;
 211b769c-3db2-420a-93a3-aee2d24990b1	+
 810c10be-2cca-472b-9785-23a7e2668a9c	+
-f62fc94f-75b0-4bba-82e0-425f3bb0ea89	http://localhost:8000/login
+f62fc94f-75b0-4bba-82e0-425f3bb0ea89	http://localhost:8000/users/login
 \.
 
 
