@@ -3225,7 +3225,7 @@ ea3b6386-3a19-4970-8b4e-be48fe310294	/realms/master/account/*
 d92ffcff-af21-4144-b731-a89bd59cdf5e	/realms/test/account/*
 810c10be-2cca-472b-9785-23a7e2668a9c	/admin/test/console/*
 e62df68a-4189-4aaa-b5cd-09909251c2a3	/
-f62fc94f-75b0-4bba-82e0-425f3bb0ea89	http://localhost:8000/users/auth
+f62fc94f-75b0-4bba-82e0-425f3bb0ea89	http://localhost:8000/*
 \.
 
 
@@ -3386,9 +3386,9 @@ COPY public.user_consent_client_scope (user_consent_id, scope_id) FROM stdin;
 
 COPY public.user_entity (id, email, email_constraint, email_verified, enabled, federation_link, first_name, last_name, realm_id, username, created_timestamp, service_account_client_link, not_before) FROM stdin;
 86d125d1-da32-41af-b792-1c1fa4693efc	\N	15d9f3e0-c0e1-4efa-a860-85ef52730f9b	f	t	\N	\N	\N	master	admin	1585055547117	\N	0
-78c5cfa9-3e79-4079-9fe7-5ef3eeb0ce5b	demouser@gmail.com	demouser@gmail.com	t	t	\N	\N	\N	test	demouser	1585057596544	\N	1588676056
 58b0d88b-7e7b-4da5-9ea8-f81425f54bf6	\N	ff439682-ea96-4e72-95ea-bec07d2cf79c	f	t	\N	\N	\N	test	service-account-kong	1586881778836	f62fc94f-75b0-4bba-82e0-425f3bb0ea89	0
 6418686e-f9e2-424d-b7c1-481bca508500	\N	1bd1f94b-bc7d-4d54-b0ab-75aa40839f1d	t	t	\N	\N	\N	test	admin	1586885972762	\N	0
+78c5cfa9-3e79-4079-9fe7-5ef3eeb0ce5b	demouser@gmail.com	demouser@gmail.com	t	t	\N	\N	\N	test	demouser	1585057596544	\N	1588697083
 \.
 
 

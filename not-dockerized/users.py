@@ -6,7 +6,7 @@ from typing import Dict
 import jwt
 import requests
 import uvicorn
-from fastapi import FastAPI, Header
+from fastapi import FastAPI, Header, Form
 from keycloak import KeycloakAdmin, KeycloakOpenID
 from fastapi.security.utils import get_authorization_scheme_param
 from starlette.requests import Request
@@ -17,7 +17,7 @@ LOCAL_IP = socket.gethostbyname(socket.gethostname())
 APP_BASE_URL = f"http://{LOCAL_IP}:3000/"
 KEYCLOAK_BASE_URL = f"http://{LOCAL_IP}:8180"
 AUTH_URL = (
-    f"{KEYCLOAK_BASE_URL}/auth/realms/test/protocol/openid-connect/auth?client_id=kong&response_type=code"
+    f"{KEYCLOAK_BASE_URL}/auth/realms/test/protocol/openid-connect/auth?client_id=kong&response_type=code&redirect_uri=http://localhost:8000/users/auth"
 )
 TOKEN_URL = (
     f"{KEYCLOAK_BASE_URL}/auth/realms/test/protocol/openid-connect/token"
@@ -43,59 +43,59 @@ keycloak_openid = KeycloakOpenID(server_url=f"http://{LOCAL_IP}:8180/auth/",
                     client_secret_key="4cd2e98f-df15-4972-84c8-1be974e9aba6")
 
 # Add user and set password
-@app.post("/users/create")
-async def create_user():
-    new_user = keycloak_admin.create_user({"email": "example@example.com",
-                    "username": "example@example.com",
+@app.post("/users/register")
+async def create_user(email: str = Form(...), username: str = Form(...), password: str = Form(...), firstName: str = Form(None), lastName: str = Form(None), referral: str = Form(None)):
+    new_user = keycloak_admin.create_user({"email": email,
+                    "username": username,
                     "enabled": True,
-                    "firstName": "Example",
-                    "lastName": "Example",
-                    "credentials": [{"value": "secret","type": "password",}]})
-    return {"user_created": new_user}
-
-# Get Token
-@app.get("/users/token")
-def get_token(user: str, password: str):
-    token = keycloak_openid.token(user, password)
-    return {"token": token}
-
-# Get Userinfo
-@app.get("/users/userinfo")
-def get_user_info(Authorization: str = Header(None)):
-    #userinfo = keycloak_openid.userinfo(token['access_token'])
-    logger.debug(Authorization)
-    userinfo = keycloak_openid.userinfo(Authorization[7:])
-    return {"userinfo": userinfo}
-
-# Refresh token
-@app.get("/users/refresh")
-def refresh_token(request: Request,):
-    refresh_token: str = request.cookies.get("Refresh")
-    token = keycloak_openid.refresh_token(refresh_token)
-    return {"token": token}
+                    "firstName": firstName or "",
+                    "lastName": lastName or "",
+                    "attributes": {"referral": referral or ""},
+                    "credentials": [{"value": password,"type": "password",}]})
+    return {"created_user_id": new_user}
 
 # Logout
 @app.get("/users/logout")
 def logout(request: Request,):
     refresh_token: str = request.cookies.get("Refresh")
+    if refresh_token == None:
+        return {"message": "Not logged in."}
     keycloak_openid.logout(refresh_token)
     response = RedirectResponse(url="http://localhost:8000/")
     response.delete_cookie("Authorization", domain="localhost")
     response.delete_cookie("Refresh", domain="localhost")
     return response
 
-# Introspect Token
+# Refresh token, not used
+@app.get("/users/refresh")
+def refresh_token(request: Request,):
+    refresh_token: str = request.cookies.get("Refresh")
+    if refresh_token == None:
+        return {"message": "No refresh token."}
+    token = keycloak_openid.refresh_token(refresh_token)
+
+    access_token = token["access_token"]
+    refresh_token = token["refresh_token"]
+
+    response = RedirectResponse(url="/")
+    response.set_cookie("Authorization", value=f"{access_token}")
+    response.set_cookie("Refresh", value=f"{refresh_token}")
+    return response
+
+# Introspect Token, not used
 @app.get("/users/introspect")
 def introspect_token(Authorization: str = Header(None)):
-    token_info = keycloak_openid.introspect(Authorization)
+    if Authorization == None:
+        return {"message": "Token not provided."}
+    token_info = keycloak_openid.introspect(Authorization[7:])
     return {"token_info": token_info}
 
-
+# Login
 @app.get("/users/login")
 async def login() -> RedirectResponse:
     return RedirectResponse(AUTH_URL)
 
-
+# Get authorization_code and set cookies after successful login
 @app.get("/users/auth")
 async def auth(code: str) -> RedirectResponse:
     payload = (
@@ -106,7 +106,7 @@ async def auth(code: str) -> RedirectResponse:
     token_response = requests.request(
         "POST", TOKEN_URL, data=payload, headers=headers
     )
-    logger.debug(token_response)
+    
     token_body = json.loads(token_response.content)
     access_token = token_body["access_token"]
     refresh_token = token_body["refresh_token"]
@@ -116,6 +116,7 @@ async def auth(code: str) -> RedirectResponse:
     response.set_cookie("Refresh", value=f"{refresh_token}")
     return response
 
+# Starting page, token decode
 @app.get("/")
 async def root(Authorization: str = Header(None)) -> Dict:
     scheme, credentials = get_authorization_scheme_param(Authorization)
@@ -125,7 +126,6 @@ async def root(Authorization: str = Header(None)) -> Dict:
         decoded = jwt.decode(
             credentials, key=public_key, verify=False
         )
-        logger.debug(decoded)
-        return {"message": "You're logged in!"}
+        return {"message": "You're logged in!", "decoded_token": decoded}
     else:
         return {"message": "You're not logged in!"}
