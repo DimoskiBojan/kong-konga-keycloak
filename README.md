@@ -1,18 +1,28 @@
 # kong-konga-keycloak
 Note: when using docker build and docker-compose make sure you are in the right directory.
 
-Full explanation of functionalities and API Docs will be provided in the future. For now start by loggin in at [http://localhost:8000/login](http://localhost:8000/login).
+See information about functionalities and things of interest at [https://docs.google.com/document/d/1ENcb4lMzz0dn91iQT1mzSpG1OSQUXCDHwbYVyXDEFX4/edit](https://docs.google.com/document/d/1ENcb4lMzz0dn91iQT1mzSpG1OSQUXCDHwbYVyXDEFX4/edit). For now start by logging in at [http://localhost:8000/users/login](http://localhost:8000/users/login).
 
 ## SHORT SETUP
 
-We can start all our services using docker-compose:
+On the first start:
+
+Build the Kong image with the kong-oidc plugin installed, if not built previously: 
 ```bash
-docker-compose up -d
+docker build -t kong:2.0.0-alpine-oidc .
 ```
-Then we need to initialize the configuration for Kong and Keycloak:
+Initialize the configuration for Kong and Keycloak:
 ```bash
 ./init.sh
 ```
+Patch/set the kong-oidc discovery and introspection endpoints with the current PC’s local IP address
+(make sure the kong container is up and running):
+```bash
+python patch-kong-oidc.py
+```
+
+The next time we want to start the containers, we can just use 'docker-compose up -d'.
+
 
 ## STEPS FOR FULL SETUP
 
