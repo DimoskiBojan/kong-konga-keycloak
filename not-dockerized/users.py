@@ -100,13 +100,13 @@ async def login() -> RedirectResponse:
 async def auth(code: str) -> RedirectResponse:
     payload = (
         f"grant_type=authorization_code&code={code}"
-        f"&redirect_uri={APP_BASE_URL}&client_id=kong&client_secret=4cd2e98f-df15-4972-84c8-1be974e9aba6"
+        f"&redirect_uri=http://localhost:8000/users/auth&client_id=kong&client_secret=4cd2e98f-df15-4972-84c8-1be974e9aba6"
     )
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     token_response = requests.request(
         "POST", TOKEN_URL, data=payload, headers=headers
     )
-
+    logger.debug(token_response)
     token_body = json.loads(token_response.content)
     access_token = token_body["access_token"]
     refresh_token = token_body["refresh_token"]
@@ -115,7 +115,6 @@ async def auth(code: str) -> RedirectResponse:
     response.set_cookie("Authorization", value=f"{access_token}")
     response.set_cookie("Refresh", value=f"{refresh_token}")
     return response
-
 
 @app.get("/")
 async def root(Authorization: str = Header(None)) -> Dict:

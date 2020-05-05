@@ -3091,7 +3091,7 @@ d0c1824a-551f-4d7f-ac7d-c2ad29ed73ab	String	jsonType.label
 --
 
 COPY public.realm (id, access_code_lifespan, user_action_lifespan, access_token_lifespan, account_theme, admin_theme, email_theme, enabled, events_enabled, events_expiration, login_theme, name, not_before, password_policy, registration_allowed, remember_me, reset_password_allowed, social, ssl_required, sso_idle_timeout, sso_max_lifespan, update_profile_on_soc_login, verify_email, master_admin_client, login_lifespan, internationalization_enabled, default_locale, reg_email_as_username, admin_events_enabled, admin_events_details_enabled, edit_username_allowed, otp_policy_counter, otp_policy_window, otp_policy_period, otp_policy_digits, otp_policy_alg, otp_policy_type, browser_flow, registration_flow, direct_grant_flow, reset_credentials_flow, client_auth_flow, offline_session_idle_timeout, revoke_refresh_token, access_token_life_implicit, login_with_email_allowed, duplicate_emails_allowed, docker_auth_flow, refresh_token_max_reuse, allow_user_managed_access, sso_max_lifespan_remember_me, sso_idle_timeout_remember_me) FROM stdin;
-test	60	300	300	\N	\N	\N	t	f	0	\N	test	0	\N	t	t	t	f	EXTERNAL	1800	36000	f	t	8da5b847-e08a-4416-b7bb-19da50324f32	1800	f	\N	f	f	f	f	0	1	30	6	HmacSHA1	totp	f2a839f8-17ed-4219-8c9a-9e385937c090	73e1871d-1ffe-42a0-b58c-487743391f8b	54500e67-cee1-43cd-9777-b1728d60ec13	f689c3f9-5c53-47b5-86ff-51e1638e5c4f	6f625bbe-585e-4f87-aaaa-85dd04d4bca6	2592000	f	900	t	f	32514373-4fc7-4061-9801-1198de02e16e	0	f	0	0
+test	60	300	300	\N	\N	\N	t	f	0	\N	test	0	\N	t	f	t	f	EXTERNAL	1800	36000	f	t	8da5b847-e08a-4416-b7bb-19da50324f32	1800	f	\N	f	f	f	f	0	1	30	6	HmacSHA1	totp	f2a839f8-17ed-4219-8c9a-9e385937c090	73e1871d-1ffe-42a0-b58c-487743391f8b	54500e67-cee1-43cd-9777-b1728d60ec13	f689c3f9-5c53-47b5-86ff-51e1638e5c4f	6f625bbe-585e-4f87-aaaa-85dd04d4bca6	2592000	f	900	t	f	32514373-4fc7-4061-9801-1198de02e16e	0	f	0	0
 master	60	300	60	\N	\N	\N	t	f	0	\N	master	0	\N	f	f	f	f	EXTERNAL	1800	36000	f	f	abc7f818-4fd6-4b54-a3c6-48b18c789c00	1800	f	\N	f	f	f	f	0	1	30	6	HmacSHA1	totp	aed1f280-a5a5-4922-af01-2d7041010485	71136b74-b058-46b3-9687-d4c835ca0ea2	bbaa95ea-6115-4b1c-88ea-2e7f883a9652	b27e2186-2702-443e-b0d9-e6c3aecfbfe8	c277a1d3-177d-4dcc-999d-4b70b0cfd640	2592000	f	900	t	f	581ca990-30e8-4601-ae74-9e01f21ab5d0	0	f	0	0
 \.
 
@@ -3386,9 +3386,9 @@ COPY public.user_consent_client_scope (user_consent_id, scope_id) FROM stdin;
 
 COPY public.user_entity (id, email, email_constraint, email_verified, enabled, federation_link, first_name, last_name, realm_id, username, created_timestamp, service_account_client_link, not_before) FROM stdin;
 86d125d1-da32-41af-b792-1c1fa4693efc	\N	15d9f3e0-c0e1-4efa-a860-85ef52730f9b	f	t	\N	\N	\N	master	admin	1585055547117	\N	0
+78c5cfa9-3e79-4079-9fe7-5ef3eeb0ce5b	demouser@gmail.com	demouser@gmail.com	t	t	\N	\N	\N	test	demouser	1585057596544	\N	1588676056
 58b0d88b-7e7b-4da5-9ea8-f81425f54bf6	\N	ff439682-ea96-4e72-95ea-bec07d2cf79c	f	t	\N	\N	\N	test	service-account-kong	1586881778836	f62fc94f-75b0-4bba-82e0-425f3bb0ea89	0
 6418686e-f9e2-424d-b7c1-481bca508500	\N	1bd1f94b-bc7d-4d54-b0ab-75aa40839f1d	t	t	\N	\N	\N	test	admin	1586885972762	\N	0
-78c5cfa9-3e79-4079-9fe7-5ef3eeb0ce5b	demouser@gmail.com	demouser@gmail.com	t	t	\N	\N	\N	test	demouser	1585057596544	\N	1588546160
 \.
 
 
