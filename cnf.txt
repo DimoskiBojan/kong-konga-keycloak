@@ -1,0 +1,22 @@
+1.gore desno admin -> manage account
+Email: soastudents11@gmail.com  (password za ovoj mail: demouser)
+first i last name random 
+
+2.Realm Settings-> Email
+Host:smtp.gmail.com
+Post: 465
+From: keycloaktest90@gmail.com
+Enable SSN: On 
+Enable Authentication: On 
+Username: keycloaktest90@gmail.com
+password:demouser 
+
+3.RealmSettings-> Login
+user reg ON
+forgot password ON 
+remember me ON
+verify mail ON 
+login with mail ON 
+
+
+image: https://hub.docker.com/r/namshi/smtp/
