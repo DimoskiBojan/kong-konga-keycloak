@@ -7,10 +7,6 @@ See information about functionalities and things of interest at [https://docs.go
 
 On the first start:
 
-Build the Kong image with the kong-oidc plugin installed, if not built previously: 
-```bash
-docker build -t kong:2.0.0-alpine-oidc .
-```
 Initialize the configuration for Kong and Keycloak:
 ```bash
 ./init.sh
@@ -22,6 +18,19 @@ python patch-kong-oidc.py
 ```
 
 The next time we want to start the containers, we can just use 'docker-compose up -d'.
+
+
+## NOT-DOCKERIZED
+
+### USERS SERVICE (port 3000)
+Commented in docker-compose.yml because of issue with LOCAL_IP inside of container.
+
+Implementing user management with Keycloak, decoding token.
+
+Run this service with the following command (make sure you are in the right directory), for now:
+```bash
+uvicorn users:app --reload --port 3000
+```
 
 
 ## STEPS FOR FULL SETUP
@@ -91,14 +100,3 @@ Run the bash script init.sh, which will copy the configs for Kong and Keycloak t
 #### Change local IP address in kong-oidc config if you change network, or first init
 
 Run the python script patch-kong-oidc.py. (Make sure the containers are up!)
-
-## NOT-DOCKERIZED
-In the folder not-dockerized you will find fastapi services which are not yet dockerized, such as the users service.
-
-### USERS SERVICE (port 3000)
-Implementing user management with Keycloak, decoding token.
-
-Run this service with the following command (make sure you are in the right directory), for now:
-```bash
-uvicorn users:app --reload --port 3000
-```
