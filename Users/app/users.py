@@ -5,7 +5,6 @@ from typing import Dict
 
 import jwt
 import requests
-import uvicorn
 from fastapi import FastAPI, Header, Form
 from keycloak import KeycloakAdmin, KeycloakOpenID
 from fastapi.security.utils import get_authorization_scheme_param

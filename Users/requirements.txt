@@ -1,5 +1,3 @@
-fastapi
 pyjwt[crypto]
 requests
-uvicorn
 python-keycloak
