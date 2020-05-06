@@ -22,11 +22,13 @@ services:
       POSTGRES_DB:       api-gw
       POSTGRES_USER:     kong
       POSTGRES_PASSWORD: kong
+    restart: on-failure
 
   kong-session-store:
     image: redis
     ports:
       - 6379:6379
+    restart: on-failure
 
   kong:
     build:
@@ -58,6 +60,7 @@ services:
       KONG_ADMIN_LISTEN:     0.0.0.0:8001, 0.0.0.0:8444 ssl
       KONG_PLUGINS:          bundled,oidc,cookies-to-headers
       KONG_LOG_LEVEL:        debug
+    restart: on-failure
 
   konga:
     image: pantsel/konga:0.14.7
@@ -74,6 +77,7 @@ services:
       DB_USER: kong
       DB_DATABASE: api-gw
       NODE_ENV: development
+    restart: on-failure
 
   keycloak-db:
     image: postgres:11-alpine
@@ -87,6 +91,7 @@ services:
       POSTGRES_DB:       keycloak
       POSTGRES_USER:     keycloak
       POSTGRES_PASSWORD: password
+    restart: on-failure
 
   keycloak:
     image: jboss/keycloak:8.0.1
@@ -106,6 +111,7 @@ services:
       # Not needed because set in init.sh
       #KEYCLOAK_USER:     admin
       #KEYCLOAK_PASSWORD: admin
+    restart: on-failure
 
   fastapi:
     build:
@@ -113,14 +119,18 @@ services:
     image: uvicorn-fastapi-sqlalchemy:latest
     ports:
       - "5000:80"
+    restart: on-failure
 
   # SET DOCKER_HOST to your Local IP address
   users:
     build:
       context: ./Users
     image: users-fastapi:latest
+    depends_on:
+      - keycloak
     ports:
       - "3000:80"
     environment:
       MODULE_NAME: users
       DOCKER_HOST: 192.168.0.33
+    restart: on-failure

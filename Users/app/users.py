@@ -58,13 +58,12 @@ async def create_user(email: str = Form(...), username: str = Form(...), passwor
 # User email from user_id
 @app.get("/users/{user_id}/email")
 async def get_user(user_id: str):
-    users = keycloak_admin.get_users({})
+    users = keycloak_admin.get_users()
     if any(user['id'] == user_id for user in users):
         user = keycloak_admin.get_user(user_id)
         user_email = user["email"]
         return {"user_id": user_id, "email": user_email}
-    else:
-        return {"message": "User not Found."}
+    return {"message": "User not found."}    
 
 # Logout
 @app.get("/users/logout")
