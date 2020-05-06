@@ -2334,6 +2334,7 @@ COPY public.credential (id, salt, type, user_id, created_date, user_label, secre
 d70a7829-a8d8-4984-aace-24a691c24f98	\N	password	86d125d1-da32-41af-b792-1c1fa4693efc	1585055547624	\N	{"value":"jwErY9YILIGX8KSzroraJaH8+oYNiyuDyyIRk/j53+IiAjNTXKHT+PGGTtfiNQ9RfcRVfko6jR1kH4Qswi4qTw==","salt":"JfgQy4BMco3Ow5oPA5AFTg=="}	{"hashIterations":27500,"algorithm":"pbkdf2-sha256"}	10
 ebd78b1c-01ff-457c-ae75-d3b4aa8e6042	\N	password	78c5cfa9-3e79-4079-9fe7-5ef3eeb0ce5b	1585057626655	\N	{"value":"ljqHkJo25sRNFxjnqbU6OqdDE/R2VcZtZQp/IgYusFdVArB+eyN7bwlJjorTL70qG02P1D7Fb/sJCeRHVT4F5g==","salt":"uvXQsjGH+1t3SzzVH0wAqw=="}	{"hashIterations":27500,"algorithm":"pbkdf2-sha256"}	10
 3fcf7863-2f57-45a5-9196-5e35dd2e4b0c	\N	password	6418686e-f9e2-424d-b7c1-481bca508500	1586886119872	\N	{"value":"vhpr96GAA/Ie4ygRulu861PnPz2LjEX9pfxfw+wDA8PNRepDZGuQV5VO8fCgq/VTb2sGmS8o5xL8GWee8DL+Sw==","salt":"p3SyLLh4psOBJSilWi+lVA=="}	{"hashIterations":27500,"algorithm":"pbkdf2-sha256"}	10
+a816baf0-94db-4042-a951-38852430d952	\N	password	a4ec06da-5616-4c24-ae46-d68be3f9adc4	1588748775010	\N	{"value":"HR1cNdEN4um1UrtKmQGya+RxUbSZuuhPI4rhC6h0vrmRITE9OQFH7bI/77V4puivzdX98kiayonMWeDV+HkPbQ==","salt":"DnY2ChVKqTSNDmQNSc/f9g=="}	{"hashIterations":27500,"algorithm":"pbkdf2-sha256"}	10
 \.
 
 
@@ -3204,6 +3205,14 @@ password	password	t	t	test
 --
 
 COPY public.realm_smtp_config (realm_id, value, name) FROM stdin;
+test	demouser	password
+test		starttls
+test	465	port
+test	true	auth
+test	smtp.gmail.com	host
+test	keycloaktest90@gmail.com	from
+test	true	ssl
+test	keycloaktest90@gmail.com	user
 \.
 
 
@@ -3361,6 +3370,7 @@ COPY public.scope_policy (scope_id, policy_id) FROM stdin;
 --
 
 COPY public.user_attribute (name, value, user_id, id) FROM stdin;
+referral	referral_link_here	a4ec06da-5616-4c24-ae46-d68be3f9adc4	1ba23228-8f88-4819-85c3-21a4fc883d4b
 \.
 
 
@@ -3385,10 +3395,11 @@ COPY public.user_consent_client_scope (user_consent_id, scope_id) FROM stdin;
 --
 
 COPY public.user_entity (id, email, email_constraint, email_verified, enabled, federation_link, first_name, last_name, realm_id, username, created_timestamp, service_account_client_link, not_before) FROM stdin;
-86d125d1-da32-41af-b792-1c1fa4693efc	\N	15d9f3e0-c0e1-4efa-a860-85ef52730f9b	f	t	\N	\N	\N	master	admin	1585055547117	\N	0
 58b0d88b-7e7b-4da5-9ea8-f81425f54bf6	\N	ff439682-ea96-4e72-95ea-bec07d2cf79c	f	t	\N	\N	\N	test	service-account-kong	1586881778836	f62fc94f-75b0-4bba-82e0-425f3bb0ea89	0
 6418686e-f9e2-424d-b7c1-481bca508500	\N	1bd1f94b-bc7d-4d54-b0ab-75aa40839f1d	t	t	\N	\N	\N	test	admin	1586885972762	\N	0
-78c5cfa9-3e79-4079-9fe7-5ef3eeb0ce5b	demouser@gmail.com	demouser@gmail.com	t	t	\N	\N	\N	test	demouser	1585057596544	\N	1588697083
+78c5cfa9-3e79-4079-9fe7-5ef3eeb0ce5b	demouser@gmail.com	demouser@gmail.com	t	t	\N	\N	\N	test	demouser	1585057596544	\N	1588716721
+86d125d1-da32-41af-b792-1c1fa4693efc	keycloaktest90@gmail.com	keycloaktest90@gmail.com	f	t	\N	admin	admin	master	admin	1585055547117	\N	0
+a4ec06da-5616-4c24-ae46-d68be3f9adc4	soastudents11@gmail.com	soastudents11@gmail.com	f	t	\N			test	soastudent	1588748774351	\N	0
 \.
 
 
@@ -3437,6 +3448,7 @@ COPY public.user_group_membership (group_id, user_id) FROM stdin;
 --
 
 COPY public.user_required_action (user_id, required_action) FROM stdin;
+a4ec06da-5616-4c24-ae46-d68be3f9adc4	VERIFY_EMAIL
 \.
 
 
@@ -3477,6 +3489,10 @@ dd223aa5-8072-4415-9387-9ded8c0245e5	6418686e-f9e2-424d-b7c1-481bca508500
 afce20ee-0d6e-4433-bb67-9f59a9e0bb05	6418686e-f9e2-424d-b7c1-481bca508500
 28c61854-e356-48de-92cd-d52ce71685c7	6418686e-f9e2-424d-b7c1-481bca508500
 25a3c840-57bd-4a4a-a45b-bdb6163c4f02	58b0d88b-7e7b-4da5-9ea8-f81425f54bf6
+d5eb4e92-88e2-4bfc-b11a-e3a338d12953	a4ec06da-5616-4c24-ae46-d68be3f9adc4
+82fbe66e-a7b7-44ec-ae66-72746eb06f04	a4ec06da-5616-4c24-ae46-d68be3f9adc4
+5450836e-a708-41d5-ac90-90817402c19b	a4ec06da-5616-4c24-ae46-d68be3f9adc4
+c1fa9ff0-acb6-4c1e-b4a5-2b6ed40138f5	a4ec06da-5616-4c24-ae46-d68be3f9adc4
 \.
 
 
