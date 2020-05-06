@@ -2771,6 +2771,7 @@ dc5dced8-923d-4be2-a6e0-b5b1d3dd5755	upn	openid-connect	oidc-usermodel-property-
 d0c1824a-551f-4d7f-ac7d-c2ad29ed73ab	Client ID	openid-connect	oidc-usersessionmodel-note-mapper	f62fc94f-75b0-4bba-82e0-425f3bb0ea89	\N
 47498844-756e-4bd5-90eb-9ce1bdb92476	Client Host	openid-connect	oidc-usersessionmodel-note-mapper	f62fc94f-75b0-4bba-82e0-425f3bb0ea89	\N
 58ea770f-b0b0-4cc8-a71f-d0ee0eeccb12	Client IP Address	openid-connect	oidc-usersessionmodel-note-mapper	f62fc94f-75b0-4bba-82e0-425f3bb0ea89	\N
+51c2fc17-6ddf-40ed-9f3f-1200c28fc786	referral-mapper	openid-connect	oidc-usermodel-attribute-mapper	f62fc94f-75b0-4bba-82e0-425f3bb0ea89	\N
 \.
 
 
@@ -3084,6 +3085,12 @@ d0c1824a-551f-4d7f-ac7d-c2ad29ed73ab	String	jsonType.label
 58ea770f-b0b0-4cc8-a71f-d0ee0eeccb12	true	access.token.claim
 58ea770f-b0b0-4cc8-a71f-d0ee0eeccb12	clientAddress	claim.name
 58ea770f-b0b0-4cc8-a71f-d0ee0eeccb12	String	jsonType.label
+51c2fc17-6ddf-40ed-9f3f-1200c28fc786	true	userinfo.token.claim
+51c2fc17-6ddf-40ed-9f3f-1200c28fc786	referral	user.attribute
+51c2fc17-6ddf-40ed-9f3f-1200c28fc786	false	id.token.claim
+51c2fc17-6ddf-40ed-9f3f-1200c28fc786	true	access.token.claim
+51c2fc17-6ddf-40ed-9f3f-1200c28fc786	referral	claim.name
+51c2fc17-6ddf-40ed-9f3f-1200c28fc786	String	jsonType.label
 \.
 
 
@@ -3370,7 +3377,7 @@ COPY public.scope_policy (scope_id, policy_id) FROM stdin;
 --
 
 COPY public.user_attribute (name, value, user_id, id) FROM stdin;
-referral	referral_link_here	a4ec06da-5616-4c24-ae46-d68be3f9adc4	1ba23228-8f88-4819-85c3-21a4fc883d4b
+referral	referral_link_here	a4ec06da-5616-4c24-ae46-d68be3f9adc4	00c11bbf-0b3d-4c26-9ca8-11b3fe618dea
 \.
 
 
@@ -3448,7 +3455,6 @@ COPY public.user_group_membership (group_id, user_id) FROM stdin;
 --
 
 COPY public.user_required_action (user_id, required_action) FROM stdin;
-a4ec06da-5616-4c24-ae46-d68be3f9adc4	VERIFY_EMAIL
 \.
 
 
