@@ -1,6 +1,7 @@
 import json
 import logging
 import socket
+import os
 from typing import Dict
 
 import jwt
@@ -11,7 +12,8 @@ from fastapi.security.utils import get_authorization_scheme_param
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
 
-LOCAL_IP = socket.gethostbyname(socket.gethostname())
+# LOCAL_IP = socket.gethostbyname(socket.gethostname())
+LOCAL_IP = os.getenv('DOCKER_HOST')
 
 APP_BASE_URL = f"http://{LOCAL_IP}:3000/"
 KEYCLOAK_BASE_URL = f"http://{LOCAL_IP}:8180"
@@ -29,14 +31,14 @@ app = FastAPI()
 
 
 # Configure admin
-keycloak_admin = KeycloakAdmin(server_url=f"http://{LOCAL_IP}:8180/auth/",
+keycloak_admin = KeycloakAdmin(server_url=f"http://host.docker.internal:8180/auth/",
                                username='admin',
                                password='secret',
                                realm_name="test",
                                verify=False)
 
 # Configure client
-keycloak_openid = KeycloakOpenID(server_url=f"http://{LOCAL_IP}:8180/auth/",
+keycloak_openid = KeycloakOpenID(server_url=f"http://host.docker.internal:8180/auth/",
                     client_id="kong",
                     realm_name="test",
                     client_secret_key="4cd2e98f-df15-4972-84c8-1be974e9aba6")

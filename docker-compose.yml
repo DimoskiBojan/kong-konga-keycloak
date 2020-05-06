@@ -114,12 +114,13 @@ services:
     ports:
       - "5000:80"
 
-  # commented due to issue with LOCAL_IP
-  # users:
-  #   build:
-  #     context: ./Users
-  #   image: users-fastapi:latest
-  #   ports:
-  #     - "3000:80"
-  #   environment:
-  #     MODULE_NAME: users
+  # SET DOCKER_HOST to your Local IP address
+  users:
+    build:
+      context: ./Users
+    image: users-fastapi:latest
+    ports:
+      - "3000:80"
+    environment:
+      MODULE_NAME: users
+      DOCKER_HOST: 192.168.0.33
