@@ -107,9 +107,16 @@ services:
     ports:
       - "5000:80"
 
-  smtp:
-    image: namshi/smtp
-    container_name: smtp_relay
+#  smtp:
+#    image: namshi/smtp
+#    container_name: smtp_relay
+#    restart: always
+#    ports:
+#     - "25:25"
+
+  mailhog:
+    image: mailhog/mailhog:latest
     restart: always
     ports:
-     - "25:25"
+      - 1025:1025
+      - 8025:8025
