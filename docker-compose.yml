@@ -106,3 +106,10 @@ services:
     image: uvicorn-fastapi-sqlalchemy:latest
     ports:
       - "5000:80"
+
+  smtp:
+    image: namshi/smtp
+    container_name: smtp_relay
+    restart: always
+    ports:
+     - "25:25"
