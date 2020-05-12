@@ -3214,11 +3214,11 @@ password	password	t	t	test
 COPY public.realm_smtp_config (realm_id, value, name) FROM stdin;
 test	demouser	password
 test		starttls
-test	465	port
-test	true	auth
-test	smtp.gmail.com	host
-test	keycloaktest90@gmail.com	from
-test	true	ssl
+test	false	auth
+test	1025	port
+test	host.docker.internal	host
+test	keycloak@localhost	from
+test	false	ssl
 test	keycloaktest90@gmail.com	user
 \.
 
@@ -3405,8 +3405,8 @@ COPY public.user_entity (id, email, email_constraint, email_verified, enabled, f
 58b0d88b-7e7b-4da5-9ea8-f81425f54bf6	\N	ff439682-ea96-4e72-95ea-bec07d2cf79c	f	t	\N	\N	\N	test	service-account-kong	1586881778836	f62fc94f-75b0-4bba-82e0-425f3bb0ea89	0
 6418686e-f9e2-424d-b7c1-481bca508500	\N	1bd1f94b-bc7d-4d54-b0ab-75aa40839f1d	t	t	\N	\N	\N	test	admin	1586885972762	\N	0
 78c5cfa9-3e79-4079-9fe7-5ef3eeb0ce5b	demouser@gmail.com	demouser@gmail.com	t	t	\N	\N	\N	test	demouser	1585057596544	\N	1588716721
-86d125d1-da32-41af-b792-1c1fa4693efc	keycloaktest90@gmail.com	keycloaktest90@gmail.com	f	t	\N	admin	admin	master	admin	1585055547117	\N	0
 a4ec06da-5616-4c24-ae46-d68be3f9adc4	soastudents11@gmail.com	soastudents11@gmail.com	f	t	\N			test	soastudent	1588748774351	\N	0
+86d125d1-da32-41af-b792-1c1fa4693efc	admin@localhost	admin@localhost	f	t	\N	admin	admin	master	admin	1585055547117	\N	0
 \.
 
 

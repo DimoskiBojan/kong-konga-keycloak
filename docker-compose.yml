@@ -134,3 +134,10 @@ services:
       MODULE_NAME: users
       DOCKER_HOST: 192.168.0.33
     restart: on-failure
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - 1025:1025
+      - 8025:8025
+    restart: on-failure
