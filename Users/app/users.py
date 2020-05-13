@@ -6,7 +6,7 @@ from typing import Dict
 
 import jwt
 import requests
-from fastapi import FastAPI, Header, Form
+from fastapi import FastAPI, Header, Form, Body
 from keycloak import KeycloakAdmin, KeycloakOpenID
 from fastapi.security.utils import get_authorization_scheme_param
 from starlette.requests import Request
@@ -63,7 +63,17 @@ async def get_user(user_id: str):
         user = keycloak_admin.get_user(user_id)
         user_email = user["email"]
         return {"user_id": user_id, "email": user_email}
-    return {"message": "User not found."}    
+    return {"message": "User not found."} 
+
+# Authenticate endpoint for AuthEMQX
+@app.post("/users/authemqx")
+def authenticateEMQX(username: str = Body(...), password: str = Body(...)):
+    token = keycloak_openid.token(username, password)
+    if token["access_token"] != None:
+        keycloak_openid.logout(token["refresh_token"])
+        return {"authenticated": "true"}
+    else:
+        return {"authenticated": "false"}
 
 # Logout
 @app.get("/users/logout")
