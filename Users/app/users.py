@@ -11,9 +11,14 @@ from keycloak import KeycloakAdmin, KeycloakOpenID
 from fastapi.security.utils import get_authorization_scheme_param
 from starlette.requests import Request
 from starlette.responses import RedirectResponse
+from consul import Consul, Check
 
 # LOCAL_IP = socket.gethostbyname(socket.gethostname())
 LOCAL_IP = os.getenv('DOCKER_HOST')
+consul_port = 8500
+service_name = "users"
+service_port = 3000
+
 
 APP_BASE_URL = f"http://{LOCAL_IP}:3000/"
 KEYCLOAK_BASE_URL = f"http://{LOCAL_IP}:8180"
@@ -26,6 +31,30 @@ TOKEN_URL = (
 
 logger = logging.getLogger(__name__)
 logger.setLevel("DEBUG")
+
+def register_to_consul():
+    consul = Consul(host="consul", port=consul_port)
+
+    agent = consul.agent
+
+    service = agent.service
+
+    check = Check.http(f"http://{LOCAL_IP}:{service_port}/", interval="10s", timeout="5s", deregister="1s")
+
+    service.register(service_name, service_id=service_name, address=LOCAL_IP, port=service_port, check=check)
+
+
+def get_service(service_id):
+    consul = Consul(host="consul", port=consul_port)
+
+    agent = consul.agent
+
+    service_list = agent.services()
+
+    service_info = service_list[service_id]
+
+    return service_info['Address'], service_info['Port']
+
 
 app = FastAPI()
 

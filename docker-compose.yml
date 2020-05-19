@@ -125,6 +125,8 @@ services:
   users:
     build:
       context: ./Users
+    stdin_open: true
+    tty: true
     image: users-fastapi:latest
     depends_on:
       - keycloak
@@ -133,6 +135,10 @@ services:
     environment:
       MODULE_NAME: users
       DOCKER_HOST: 192.168.0.33
+      SERVICE_3000_CHECK_HTTP: "/"
+      SERVICE_3000_CHECK_INTERVAL: "15s"
+      SERVICE_3000_CHECK_TIMEOUT: "1s"
+      SERVICE_3000_CHECK_DEREGISTER_AFTER: "10m"
     restart: on-failure
 
   mailhog:
