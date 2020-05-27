@@ -2,7 +2,7 @@ import requests
 import socket
 
 KONG_OIDC_PLUGIN_URL = "http://localhost:8001/plugins/de00c863-34d3-48d0-9541-8f77cd0f3a90"
-LOCAL_IP = socket.gethostbyname(socket.gethostname())
+LOCAL_IP = '192.168.37.138'
 
 payload = (
         f"config.introspection_endpoint=http://{LOCAL_IP}:8180/auth/realms/test/protocol/openid-connect/token/introspect"

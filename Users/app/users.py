@@ -56,24 +56,24 @@ def get_service(service_id):
     return service_info['Address'], service_info['Port']
 
 
-app = FastAPI()
+app = FastAPI(docs_url='/docs', openapi_url='/openapi.json')
 
 
 # Configure admin
-keycloak_admin = KeycloakAdmin(server_url=f"http://host.docker.internal:8180/auth/",
+keycloak_admin = KeycloakAdmin(server_url=f"http://{LOCAL_IP}:8180/auth/",
                                username='admin',
                                password='secret',
                                realm_name="test",
                                verify=False)
 
 # Configure client
-keycloak_openid = KeycloakOpenID(server_url=f"http://host.docker.internal:8180/auth/",
+keycloak_openid = KeycloakOpenID(server_url=f"http://{LOCAL_IP}:8180/auth/",
                     client_id="kong",
                     realm_name="test",
                     client_secret_key="4cd2e98f-df15-4972-84c8-1be974e9aba6")
 
 # Add user and set password
-@app.post("/users/register")
+@app.post("/register")
 async def create_user(email: str = Form(...), username: str = Form(...), password: str = Form(...), firstName: str = Form(None), lastName: str = Form(None), referral: str = Form(None)):
     new_user = keycloak_admin.create_user({"email": email,
                     "username": username,
@@ -85,17 +85,17 @@ async def create_user(email: str = Form(...), username: str = Form(...), passwor
     return {"created_user_id": new_user}
 
 # User email from user_id
-@app.get("/users/{user_id}/email")
+@app.get("/{user_id}/email")
 async def get_user(user_id: str):
     users = keycloak_admin.get_users()
     if any(user['id'] == user_id for user in users):
         user = keycloak_admin.get_user(user_id)
         user_email = user["email"]
         return {"user_id": user_id, "email": user_email}
-    return {"message": "User not found."} 
+    return {"message": "User not found."}
 
 # Authenticate endpoint for AuthEMQX
-@app.post("/users/authemqx")
+@app.post("/authemqx")
 def authenticateEMQX(username: str = Body(...), password: str = Body(...)):
     token = keycloak_openid.token(username, password)
     if token["access_token"] != None:
@@ -105,19 +105,19 @@ def authenticateEMQX(username: str = Body(...), password: str = Body(...)):
         return {"authenticated": "false"}
 
 # Logout
-@app.get("/users/logout")
+@app.get("/logout")
 def logout(request: Request,):
     refresh_token: str = request.cookies.get("Refresh")
     if refresh_token == None:
         return {"message": "Not logged in."}
     keycloak_openid.logout(refresh_token)
-    response = RedirectResponse(url="http://localhost:8000/")
+    response = RedirectResponse(url="http://localhost:8000/users/")
     response.delete_cookie("Authorization", domain="localhost")
     response.delete_cookie("Refresh", domain="localhost")
     return response
 
 # Refresh token, not used
-@app.get("/users/refresh")
+@app.get("/refresh")
 def refresh_token(request: Request,):
     refresh_token: str = request.cookies.get("Refresh")
     if refresh_token == None:
@@ -133,7 +133,7 @@ def refresh_token(request: Request,):
     return response
 
 # Introspect Token, not used
-@app.get("/users/introspect")
+@app.get("/introspect")
 def introspect_token(Authorization: str = Header(None)):
     if Authorization == None:
         return {"message": "Token not provided."}
@@ -141,12 +141,12 @@ def introspect_token(Authorization: str = Header(None)):
     return {"token_info": token_info}
 
 # Login
-@app.get("/users/login")
+@app.get("/login")
 async def login() -> RedirectResponse:
     return RedirectResponse(AUTH_URL)
 
 # Get authorization_code and set cookies after successful login
-@app.get("/users/auth")
+@app.get("/auth")
 async def auth(code: str) -> RedirectResponse:
     payload = (
         f"grant_type=authorization_code&code={code}"
@@ -156,12 +156,12 @@ async def auth(code: str) -> RedirectResponse:
     token_response = requests.request(
         "POST", TOKEN_URL, data=payload, headers=headers
     )
-    
+
     token_body = json.loads(token_response.content)
     access_token = token_body["access_token"]
     refresh_token = token_body["refresh_token"]
 
-    response = RedirectResponse(url="/")
+    response = RedirectResponse(url="/users/")
     response.set_cookie("Authorization", value=f"{access_token}")
     response.set_cookie("Refresh", value=f"{refresh_token}")
     return response
